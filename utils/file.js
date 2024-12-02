@@ -21,15 +21,31 @@ export function readAccounts(filePath) {
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) return reject(err);
-            const accounts = data.split('\n').map(line => {
-                const [email, password] = line.split('|');
-                return { email: email.trim(), password: password.trim() };
-            }).filter(account => account.email && account.password); 
+
+            const accounts = data
+                .split('\n')
+                .map((line, index) => {
+                    if (!line.includes('|')) {
+                        return null;
+                    }
+
+                    const [email, password] = line.split('|').map(part => part?.trim());
+                    if (!email || !password) {
+                        return null;
+                    }
+
+                    return { email, password };
+                })
+                .filter(account => account !== null); 
+            
+            if (accounts.length === 0) {
+                console.warn("No valid accounts found in the file.");
+            }
+
             resolve(accounts);
         });
     });
-};
-
+}
 export function saveToken(filePath, token) {
     fs.appendFile(filePath, `${token}\n`, (err) => {
         if (err) {
