@@ -6,21 +6,21 @@ import { logger } from "./utils/logger.js";
 async function start() {
     showBanner();
     const tokens = await readToken("providers.txt");
-    const proxies = await readToken("proxy.txt");
 
-    if (proxies.length < tokens.length) {
-        logger("代理数量不足以支持所有供应商。程序退出...");
+    if (tokens.length === 0) {
+        logger("未找到任何供应商令牌。程序退出...");
         return;
     }
 
-    // 使用一个代理为每个令牌创建连接
+    // 移除代理逻辑，直接根据令牌创建连接
     for (let i = 0; i < tokens.length; i++) {
         const token = tokens[i];
-        const proxy = proxies[i]; 
-
-        await createConnection(token, proxy);
+        
+        await createConnection(token); // 不再传递 proxy 参数
         await delay(5000);
     }
+
+    logger("所有供应商的连接已完成。");
 }
 
 start();
