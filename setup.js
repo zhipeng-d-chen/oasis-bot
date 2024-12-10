@@ -25,16 +25,12 @@ async function setup() {
     rl.close();
     return;
   }
-  
-  const proxies = await readToken("proxy.txt");
+
+  // 模拟代理逻辑：这里可以自定义一个默认的代理列表，或者完全跳过代理逻辑
+  const proxies = []; // 这里为空数组表示没有使用代理
   const isLogin = await loginFromFile('accounts.txt');
 
-  if (proxies.length === 0) { 
-    logger('在proxy.txt中未找到任何代理。程序退出...', "", "error");
-    rl.close();
-    return; 
-  }
-  if (!isLogin) {
+  if (isLogin === false) {
     logger("没有账户成功登录。程序退出...", "", "error");
     rl.close();
     return; 
@@ -42,7 +38,7 @@ async function setup() {
 
   logger(`正在创建 ${numProv} 个供应商...`);
   await createProviders(numProv);
-  
+
   rl.close();
 }
 
