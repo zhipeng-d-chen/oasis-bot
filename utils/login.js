@@ -4,44 +4,36 @@ import { logger } from './logger.js';
 
 // Function to register user
 async function registerUser(email, password) {
-    const url = 'https://api.oasis.ai/internal/authSignup?batch=1';
+    const url = 'https://api.oasis.ai/internal/auth/signup';
     const payload = {
-        "0": {
-        "json": {
-            email: email,
-            password: password, 
-            referralCode: "zlketh"
-            }
-        }
-    };
+        email: email,
+        password: password,
+        referralCode: "zlketh"
+    }
     const headers = {
         'Content-Type': 'application/json',
     };
 
     try {
         const response = await axios.post(url, payload, { headers });
-        if (response.data[0].result) {
+        if (response.data) {
             logger('register successful:', email);
             logger('Check Your inbox for verification email');
             return true;
         }
     } catch (error) {
         logger(`register error for ${email}:`, error.response ? error.response.data[0] : error.response.statusText, 'error');
-        return null; 
+        return null;
     }
 }
 // Function to login a user
 async function loginUser(email, password) {
-    const url = 'https://api.oasis.ai/internal/authLogin?batch=1';
+    const url = 'https://api.oasis.ai/internal/auth/login';
     const payload = {
-        "0": {
-            "json": {
-                email: email,
-                password: password,
-                rememberSession: true
-            }
-        }
-    };
+        email,
+        password,
+        rememberSession: true
+    }
 
     const headers = {
         'Content-Type': 'application/json',
@@ -50,11 +42,11 @@ async function loginUser(email, password) {
     try {
         const response = await axios.post(url, payload, { headers });
         logger('Login successful:', email);
-        return response.data[0].result.data.json.token;
+        return response.data.token;
     } catch (error) {
         logger(`Login error for ${email}:`, error.response ? error.response.data[0] : error.response.statusText, 'error');
         logger('Please Check Your inbox to verification your email', email, 'error');
-        return null; 
+        return null;
     }
 }
 
@@ -78,13 +70,13 @@ export async function loginFromFile(filePath) {
 
         if (successCount > 0) {
             logger(`${successCount}/${accounts.length} accounts successfully logged in.`);
-            return true; 
+            return true;
         } else {
             logger("All accounts failed to log in.", "", "error");
-            return false; 
+            return false;
         }
     } catch (error) {
         logger("Error reading accounts or processing logins:", error, "error");
-        return false; 
+        return false;
     }
 }
