@@ -28,22 +28,17 @@ async function setup() {
   };
 
   const accounts = await readToken("accounts.txt");
-  const tokens = await readToken('tokens.txt');
+  if (fs.existsSync('tokens.txt')) {
+    const tokens = await readToken("tokens.txt");
 
-  if (accounts.length !== tokens.length) {
-    if (fs.existsSync('tokens.txt')) {
-      try {
-        fs.unlinkSync('tokens.txt');
-        logger(`${'tokens.txt'} has been deleted.`);
-      } catch (err) {
-        logger(`Error deleting ${filePath}:`, "", 'error');
+    if (accounts.length !== tokens.length) {
+      fs.unlinkSync('tokens.txt');
+      const isLogin = await loginFromFile('accounts.txt');
+      if (!isLogin) {
+        logger("No accounts were successfully logged in. Exiting...", "", "error");
+        rl.close();
+        return;
       }
-    }
-    const isLogin = await loginFromFile('accounts.txt');
-    if (!isLogin) {
-      logger("No accounts were successfully logged in. Exiting...", "", "error");
-      rl.close();
-      return;
     }
   }
 
