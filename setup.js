@@ -18,7 +18,7 @@ function askQuestion(query) {
 async function setup() {
   console.log(beddu)
   // Ask for number of providers to create
-  const input = await askQuestion('Enter the number of Providers you want to create [1-100]: ');
+  const input = await askQuestion('Enter the number of Providers you want to create [1-100] for each account: ');
   const numProv = parseInt(input, 10);
 
   if (isNaN(numProv) || numProv < 1 || numProv > 100) {

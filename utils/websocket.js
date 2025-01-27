@@ -97,4 +97,3 @@ export async function createConnection(token, proxy = null) {
         logger("WebSocket error for token:", token, "error");
     });
 }
-

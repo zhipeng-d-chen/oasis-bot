@@ -10,7 +10,6 @@ async function start() {
 
     if (proxies.length === 0) {
         logger("No Proxy Found - Running Without Proxy...", "", "warn");
-        //return;
     }
 
     // Create connections with 1 proxy per token
