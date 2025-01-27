@@ -25,3 +25,4 @@ export function centerText(text) {
 export function showBanner() {
     console.log(chalk.green(centerText(art)));
 }
+
