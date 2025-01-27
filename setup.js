@@ -42,6 +42,13 @@ async function setup() {
     }
   }
 
+  const isLogin = await loginFromFile('accounts.txt');
+  if (!isLogin) {
+    logger("No accounts were successfully logged in. Exiting...", "", "error");
+    rl.close();
+    return;
+  }
+
   logger(`Creating ${numProv} Providers...`);
   await createProviders(numProv);
 
