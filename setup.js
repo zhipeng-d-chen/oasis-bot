@@ -1,5 +1,5 @@
 import { readToken, delay } from "./utils/file.js";
-import { showBanner } from "./utils/banner.js";
+import beddu from "./utils/banner.js";
 import { loginFromFile } from "./utils/login.js";
 import { createProviders } from "./utils/providers.js";
 import { logger } from "./utils/logger.js";
@@ -16,7 +16,7 @@ function askQuestion(query) {
 }
 
 async function setup() {
-  showBanner();
+  console.log(beddu)
   // Ask for number of providers to create
   const input = await askQuestion('Enter the number of Providers you want to create [1-100]: ');
   const numProv = parseInt(input, 10);
@@ -36,7 +36,7 @@ async function setup() {
         fs.unlinkSync('tokens.txt');
         logger(`${'tokens.txt'} has been deleted.`);
       } catch (err) {
-        logger(`Error deleting ${filePath}:`, 'error');
+        logger(`Error deleting ${filePath}:`, "", 'error');
       }
     }
     const isLogin = await loginFromFile('accounts.txt');

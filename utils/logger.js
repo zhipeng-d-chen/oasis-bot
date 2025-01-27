@@ -13,4 +13,3 @@ export function logger(message, value = '', level = 'info') {
     const log = levels[level] || chalk.whiteBright;
     console.log(log(`[${now}] [${level.toUpperCase()}]: ${message}`, value));
 }
-

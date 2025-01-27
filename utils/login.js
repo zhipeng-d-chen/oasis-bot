@@ -81,4 +81,3 @@ export async function loginFromFile(filePath) {
         return false;
     }
 }
-
